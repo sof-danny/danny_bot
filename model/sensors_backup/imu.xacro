@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- IMU sensor -->
+  <xacro:macro name="imu_sensor" params="parent_link">
+    <joint name="imu_joint" type="fixed">
+        <parent link="${parent_link}"/>
+        <child link="imu_link"/>
+        <origin xyz="0 0 ${body_link_z_dim/2 - 0.05}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="imu_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.02 0.02 0.01"/>
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.02 0.02 0.01"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.01"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001"/>
+        </inertial>
+    </link>
+
+    <!-- IMU sensor in Gazebo -->
+    <gazebo reference="imu_link">
+      <material>Gazebo/Red</material>
+      <gravity>true</gravity>
+      <sensor name="imu_sensor" type="imu">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <visualize>true</visualize>
+        <topic>imu</topic>
+        <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+          <ros>
+            <namespace>/</namespace>
+            <remapping>~/out:=imu/data</remapping>
+          </ros>
+          <topicName>imu/data</topicName>
+          <bodyName>imu_link</bodyName>
+          <frameName>imu_link</frameName>
+          <initialOrientationAsReference>false</initialOrientationAsReference>
+          <accelDrift>0.005 0.005 0.005</accelDrift>
+          <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
+          <rateDrift>0.005 0.005 0.005</rateDrift>
+          <rateGaussianNoise>0.005 0.005 0.005</rateGaussianNoise>
+          <headingDrift>0.005</headingDrift>
+          <headingGaussianNoise>0.005</headingGaussianNoise>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+</robot> 

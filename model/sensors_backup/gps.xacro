@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- GPS sensor -->
+  <xacro:macro name="gps_sensor" params="parent_link">
+    <joint name="gps_joint" type="fixed">
+        <parent link="${parent_link}"/>
+        <child link="gps_link"/>
+        <origin xyz="0 0 ${body_link_z_dim/2 + 0.02}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="gps_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.01" length="0.01"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.01" length="0.01"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.01"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001"/>
+        </inertial>
+    </link>
+
+    <!-- GPS sensor in Gazebo -->
+    <gazebo reference="gps_link">
+      <material>Gazebo/White</material>
+      <sensor name="gps" type="gps">
+        <always_on>true</always_on>
+        <update_rate>10.0</update_rate>
+        <visualize>true</visualize>
+        <topic>gps/fix</topic>
+        <plugin name="gps_controller" filename="libgazebo_ros_gps_sensor.so">
+          <ros>
+            <namespace>/</namespace>
+            <remapping>~/out:=gps/fix</remapping>
+          </ros>
+          <frame_name>gps_link</frame_name>
+          <!-- Reference position for GPS -->
+          <reference_latitude>49.9</reference_latitude>
+          <reference_longitude>8.9</reference_longitude>
+          <reference_altitude>0.0</reference_altitude>
+          <reference_heading>0.0</reference_heading>
+          <!-- GPS Position Noise -->
+          <position_noise>
+            <x>0.05</x>
+            <y>0.05</y>
+            <z>0.05</z>
+          </position_noise>
+          <!-- GPS Velocity Noise -->
+          <velocity_noise>
+            <x>0.01</x>
+            <y>0.01</y>
+            <z>0.01</z>
+          </velocity_noise>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+</robot> 
