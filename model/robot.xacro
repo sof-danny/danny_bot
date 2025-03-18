@@ -92,6 +92,17 @@ value="${(1.0/12.0)*wheel_mass*(3.0*wheel_link_radius*wheel_link_radius+wheel_li
         <color rgba="0.7 0.7 0.7 1"/>
     </material>
 
+<!-- Include the modular LIDAR sensor file -->
+<xacro:include filename="$(find mobile_dd_robot)/model/sensors/lidar.xacro" />
+<!-- Include the modular camera sensor file -->
+<xacro:include filename="$(find mobile_dd_robot)/model/sensors/camera.xacro" />
+<!-- Include the modular depth camera sensor file -->
+<xacro:include filename="$(find mobile_dd_robot)/model/sensors/depth_camera.xacro" />
+<!-- Include the modular IMU sensor file -->
+<xacro:include filename="$(find mobile_dd_robot)/model/sensors/imu.xacro" />
+<!-- Include the modular GPS sensor file -->
+<xacro:include filename="$(find mobile_dd_robot)/model/sensors/gps.xacro" />
+
 <!-- Over here we include the file that defines extra Gazebo options and motion control driver -->
 <xacro:include filename="$(find mobile_dd_robot)/model/robot.gazebo" />
 
@@ -250,227 +261,16 @@ value="${(1.0/12.0)*wheel_mass*(3.0*wheel_link_radius*wheel_link_radius+wheel_li
 <!-- ########################################################### -->
 
 <!-- ########################################################### -->
-<!-- START: LIDAR connector and sensor										 -->
+<!-- INCLUDING SENSOR REFERENCES                                          -->
 <!-- ########################################################### -->
 
-<!-- LIDAR connector link -->
-<joint name="lidar_connector_joint" type="fixed">
-    <parent link="body_link"/>
-    <child link="lidar_connector_link"/>
-    <origin xyz="0 0 ${body_link_z_dim/2}" rpy="0 0 0"/>
-</joint>
+<!-- Moved to modular file sensors/...-->
 
-<link name="lidar_connector_link">
-    <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <cylinder radius="0.02" length="0.06"/>
-        </geometry>
-        <material name="black"/>
-    </visual>
-    <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <cylinder radius="0.02" length="0.06"/>
-        </geometry>
-    </collision>
-    <inertial>
-        <mass value="0.1"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="0.000033" ixy="0" ixz="0" iyy="0.000033" iyz="0" izz="0.000033"/>
-    </inertial>
-</link>
-
-<!-- LIDAR sensor -->
-<joint name="lidar_joint" type="fixed">
-    <parent link="lidar_connector_link"/>
-    <child link="lidar_link"/>
-    <origin xyz="0 0 0.05" rpy="0 0 0"/>
-</joint>
-
-<link name="lidar_link">
-    <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <cylinder radius="0.05" length="0.04"/>
-        </geometry>
-        <material name="black"/>
-    </visual>
-    <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <cylinder radius="0.05" length="0.04"/>
-        </geometry>
-    </collision>
-    <inertial>
-        <mass value="0.1"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="0.000033" ixy="0" ixz="0" iyy="0.000033" iyz="0" izz="0.000033"/>
-    </inertial>
-</link>
-
-<!-- ########################################################### -->
-<!-- END: LIDAR connector and sensor										 -->
-<!-- ########################################################### -->
-
-<!-- ########################################################### -->
-<!-- START: Camera sensor										 -->
-<!-- ########################################################### -->
-
-<!-- Camera sensor -->
-<joint name="camera_joint" type="fixed">
-    <parent link="body_link"/>
-    <child link="camera_link"/>
-    <origin xyz="0.5 0.05 ${body_link_z_dim/2 + 0.01}" rpy="0 0.2 0"/>  <!-- Positioned forward and slightly tilted down -->
-</joint>
-
-<link name="camera_link">
-    <visual>
-        <origin xyz="0 0 0" rpy="0 ${pi_const/2} 0"/>
-        <geometry>
-            <box size="0.03 0.05 0.02"/>
-        </geometry>
-        <material name="orange"/>
-    </visual>
-    <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <box size="0.03 0.05 0.05"/>
-        </geometry>
-    </collision>
-    <inertial>
-        <mass value="0.1"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="0.000033" ixy="0" ixz="0" iyy="0.000033" iyz="0" izz="0.000033"/>
-    </inertial>
-</link>
-
-<!-- Camera optical frame -->
-<joint name="camera_optical_joint" type="fixed">
-    <parent link="camera_link"/>
-    <child link="camera_optical_frame"/>
-    <origin xyz="0 0 0" rpy="${-pi_const/2} 0 ${-pi_const/2}"/>
-</joint>
-
-<link name="camera_optical_frame"/>
-
-<!-- ########################################################### -->
-<!-- END: Camera sensor										 -->
-<!-- ########################################################### -->
-
-<!-- ########################################################### -->
-<!-- START: Depth Camera sensor									 -->
-<!-- ########################################################### -->
-
-<!-- Depth Camera mount directly on body -->
-<joint name="depth_camera_joint" type="fixed">
-    <parent link="body_link"/>
-    <child link="depth_camera_link"/>
-    <origin xyz="0.5 -0.05 ${body_link_z_dim/2 + 0.01}" rpy="0 0.2 0"/>  <!-- Positioned forward and slightly tilted down, opposite side from camera -->
-</joint>
-
-<link name="depth_camera_link">
-    <visual>
-        <origin xyz="0 0 0" rpy="0 ${pi_const/2} 0"/>
-        <geometry>
-            <box size="0.03 0.05 0.02"/>
-        </geometry>
-        <material name="blue"/>
-    </visual>
-    <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <box size="0.03 0.05 0.05"/>
-        </geometry>
-    </collision>
-    <inertial>
-        <mass value="0.1"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="0.000033" ixy="0" ixz="0" iyy="0.000033" iyz="0" izz="0.000033"/>
-    </inertial>
-</link>
-
-<!-- Depth Camera optical frame -->
-<joint name="depth_camera_optical_joint" type="fixed">
-    <parent link="depth_camera_link"/>
-    <child link="depth_camera_optical_frame"/>
-    <origin xyz="0 0 0" rpy="${-pi_const/2} 0 ${-pi_const/2}"/>
-</joint>
-
-<link name="depth_camera_optical_frame"/>
-
-<!-- ########################################################### -->
-<!-- END: Depth Camera sensor									 -->
-<!-- ########################################################### -->
-
-<!-- ########################################################### -->
-<!-- START: IMU sensor                                           -->
-<!-- ########################################################### -->
-
-<joint name="imu_joint" type="fixed">
-    <parent link="body_link"/>
-    <child link="imu_link"/>
-    <origin xyz="0 0 ${body_link_z_dim/2 - 0.05}" rpy="0 0 0"/>
-</joint>
-
-<link name="imu_link">
-    <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <box size="0.02 0.02 0.01"/>
-        </geometry>
-        <material name="red"/>
-    </visual>
-    <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <box size="0.02 0.02 0.01"/>
-        </geometry>
-    </collision>
-    <inertial>
-        <mass value="0.01"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001"/>
-    </inertial>
-</link>
-
-<!-- ########################################################### -->
-<!-- END: IMU sensor                                             -->
-<!-- ########################################################### -->
-
-<!-- ########################################################### -->
-<!-- START: GPS sensor                                           -->
-<!-- ########################################################### -->
-
-<joint name="gps_joint" type="fixed">
-    <parent link="body_link"/>
-    <child link="gps_link"/>
-    <origin xyz="0 0 ${body_link_z_dim/2 + 0.02}" rpy="0 0 0"/>
-</joint>
-
-<link name="gps_link">
-    <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <cylinder radius="0.01" length="0.01"/>
-        </geometry>
-        <material name="white"/>
-    </visual>
-    <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-            <cylinder radius="0.01" length="0.01"/>
-        </geometry>
-    </collision>
-    <inertial>
-        <mass value="0.01"/>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001"/>
-    </inertial>
-</link>
-
-<!-- ########################################################### -->
-<!-- END: GPS sensor                                             -->
-<!-- ########################################################### -->
+<!-- Add modular sensors using macros -->
+<xacro:lidar_sensor parent_link="body_link" />
+<xacro:camera_sensor parent_link="body_link" x_offset="0.5" y_offset="0.05" z_offset="${body_link_z_dim/2 + 0.01}" />
+<xacro:depth_camera_sensor parent_link="body_link" x_offset="0.5" y_offset="-0.05" z_offset="${body_link_z_dim/2 + 0.01}" />
+<xacro:imu_sensor parent_link="body_link" />
+<xacro:gps_sensor parent_link="body_link" />
 
 </robot>
