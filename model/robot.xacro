@@ -111,10 +111,11 @@ value="${(1.0/12.0)*wheel_mass*(3.0*wheel_link_radius*wheel_link_radius+wheel_li
 <!-- ########################################################### -->
 
 <!-- We need to have this dummy link otherwise Gazebo will complain -->
-<link name="base_link">
+<link name="base_footprint">
 </link>
+
 <joint name="base_joint" type="fixed">
-	<parent link="base_link"/>
+	<parent link="base_footprint"/>
 	<child link="body_link"/>
 </joint>
 

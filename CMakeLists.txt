@@ -19,6 +19,9 @@ install(
 install(DIRECTORY
   config
   launch
+  model
+  rviz
+  worlds
   DESTINATION share/${PROJECT_NAME}
 )
 

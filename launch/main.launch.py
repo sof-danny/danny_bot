@@ -15,7 +15,7 @@ def generate_launch_description():
     
     # Paths to files
     modelFileRelativePath = 'model/robot.xacro'
-    worldFileRelativePath = 'model/empty_world.world'
+    worldFileRelativePath = 'worlds/obstacles.world'
     rvizConfigPath = os.path.join(get_package_share_directory(namePackage), 'rviz', 'robot_3.rviz')
     
     # Absolute paths

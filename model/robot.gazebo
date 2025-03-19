@@ -9,36 +9,36 @@
 <!-- Everything is described here -->
 <!-- http://classic.gazebosim.org/tutorials?tut=ros_urdf&cat=connect_ros  -->
 <!-- mu1 and mu2 are friction coefficients -->
-<gazebo reference="base_link">
-<mu1>0.2</mu1>
-<mu2>0.2</mu2>
-<material>Gazebo/Gray</material>
+<gazebo reference="base_footprint">
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <material>Gazebo/Gray</material>
 </gazebo>
 
 <gazebo reference="body_link">
-<mu1>0.2</mu1>
-<mu2>0.2</mu2>
-<material>Gazebo/Green</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <material>Gazebo/Green</material>
 </gazebo>
 
 <gazebo reference="right_wheel_link">
-<mu1>0.2</mu1>
-<mu2>0.2</mu2>
-<material>Gazebo/Black</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <material>Gazebo/Black</material>
 </gazebo>
 
 
 <gazebo reference="left_wheel_link">
-<mu1>0.2</mu1>
-<mu2>0.2</mu2>
-<material>Gazebo/Black</material>
+  <mu1>0.2</mu1>
+  <mu2>0.2</mu2>
+  <material>Gazebo/Black</material>
 </gazebo>
 
 
 <gazebo reference="caster_link">
-<mu1>0.000002</mu1>
-<mu2>0.000002</mu2>
-<material>Gazebo/Gray</material>
+  <mu1>0.000002</mu1>
+  <mu2>0.000002</mu2>
+  <material>Gazebo/Gray</material>
 </gazebo>
 
 <!-- GPS sensor in Gazebo moved to modular file gps.xacro -->
@@ -75,7 +75,7 @@
         <publish_wheel_tf>true</publish_wheel_tf>
 
         <odometry_frame>odom</odometry_frame>
-        <robot_base_frame>base_link</robot_base_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
     
       </plugin>
 </gazebo> 
