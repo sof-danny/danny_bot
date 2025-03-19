@@ -20,6 +20,7 @@ install(DIRECTORY
   worlds
   maps
   scripts
+  tf_frames
   DESTINATION share/${PROJECT_NAME}
 )
 

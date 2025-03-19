@@ -27,7 +27,7 @@ def generate_launch_description():
         
     declare_slam_params_file_cmd = DeclareLaunchArgument(
         'slam_params_file',
-        default_value=os.path.join(mobile_dd_robot_dir, 'config', 'mapper_params_online_async.yaml'),
+        default_value=os.path.join(mobile_dd_robot_dir, 'config', 'slam_params_online_async.yaml'),
         description='Full path to the ROS2 parameters file for SLAM')
     
     declare_map_file_cmd = DeclareLaunchArgument(

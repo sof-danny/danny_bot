@@ -37,7 +37,7 @@ def generate_launch_description():
     
     declare_slam_mode_cmd = DeclareLaunchArgument(
         'slam_mode',
-        default_value='mapping',
+        default_value='localization',
         description='SLAM mode: "mapping" or "localization"')
     
     # Launch the simulation environment
@@ -58,8 +58,8 @@ def generate_launch_description():
           # Then override with explicit parameters
           {'use_sim_time': use_sim_time},
           # Critical parameters LAST to ensure they take precedence
-          {'slam_toolbox.ros__parameters.mode': slam_mode},
-          {'slam_toolbox.ros__parameters.map_file_name': map_file_name}
+          {'mode': slam_mode},
+          {'map_file_name': map_file_name}
         ],
         package='slam_toolbox',
         executable='async_slam_toolbox_node',
