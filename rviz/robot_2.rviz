@@ -14,6 +14,7 @@ Panels:
         - /Odometry1
         - /Odometry1/Shape1
         - /Odometry1/Covariance1
+        - /Map1
       Splitter Ratio: 0.5
     Tree Height: 416
   - Class: rviz_common/Selection
@@ -73,6 +74,10 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        base_footprint:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
         body_link:
           Alpha: 1
           Show Axes: false
@@ -101,10 +106,11 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        dummy:
+        gps_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
+          Value: true
         imu_link:
           Alpha: 1
           Show Axes: false
@@ -143,6 +149,8 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
+        base_footprint:
+          Value: true
         body_link:
           Value: true
         camera_link:
@@ -155,7 +163,7 @@ Visualization Manager:
           Value: true
         depth_camera_optical_frame:
           Value: true
-        dummy:
+        gps_link:
           Value: true
         imu_link:
           Value: true
@@ -164,6 +172,8 @@ Visualization Manager:
         lidar_connector_link:
           Value: true
         lidar_link:
+          Value: true
+        map:
           Value: true
         odom:
           Value: true
@@ -175,26 +185,29 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        odom:
-          dummy:
-            body_link:
-              camera_link:
-                camera_optical_frame:
+        map:
+          odom:
+            base_footprint:
+              body_link:
+                camera_link:
+                  camera_optical_frame:
+                    {}
+                caster_link:
                   {}
-              caster_link:
+                depth_camera_link:
+                  depth_camera_optical_frame:
+                    {}
+                gps_link:
+                  {}
+                imu_link:
+                  {}
+                lidar_connector_link:
+                  lidar_link:
+                    {}
+              left_wheel_link:
                 {}
-              depth_camera_link:
-                depth_camera_optical_frame:
-                  {}
-              imu_link:
+              right_wheel_link:
                 {}
-              lidar_connector_link:
-                lidar_link:
-                  {}
-            left_wheel_link:
-              {}
-            right_wheel_link:
-              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -247,6 +260,7 @@ Visualization Manager:
       Visibility:
         Grid: true
         LaserScan: true
+        Map: true
         Odometry: true
         PointCloud2: true
         RobotModel: true
@@ -304,7 +318,7 @@ Visualization Manager:
           Scale: 1
           Value: true
         Value: true
-      Enabled: true
+      Enabled: false
       Keep: 100
       Name: Odometry
       Position Tolerance: 0.10000000149011612
@@ -325,11 +339,32 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /odom
+      Value: false
+    - Alpha: 0.699999988079071
+      Class: rviz_default_plugins/Map
+      Color Scheme: map
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /map
+      Update Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /map_updates
+      Use Timestamp: false
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: odom
+    Fixed Frame: map
     Frame Rate: 30
   Name: root
   Tools:
@@ -372,7 +407,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 2.933908700942993
+      Distance: 11.421204566955566
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -387,10 +422,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6203994750976562
+      Pitch: 0.6003994345664978
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.9803942441940308
+      Yaw: 4.130398750305176
     Saved: ~
 Window Geometry:
   Camera:
