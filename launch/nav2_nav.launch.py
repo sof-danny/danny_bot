@@ -10,7 +10,7 @@ from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
     #for navigation
-    nav2_bringup_dir = get_package_share_directory('nav2_bringup')
+    danny_bot_dir = get_package_share_directory('danny_bot')
 
 
     # Launch Arguments
@@ -27,7 +27,7 @@ def generate_launch_description():
     # Launch nav2 bringup
     navigation_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(nav2_bringup_dir, 'launch', 'navigation_launch.py')
+            os.path.join(danny_bot_dir, 'launch', 'navigation_launch.py')
         ),
         launch_arguments={
             'use_sim_time': use_sim_time

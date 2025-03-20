@@ -1,0 +1,158 @@
+This file is to explain reasons behind some implementations 
+or files to run to achieve certain things 
+
+===== SLAM =====
+1. Mapping 
+   - Use: ros2 launch danny_bot slam.launch.py
+   - Purpose: Starts SLAM Toolbox in mapping mode to create a new map
+   - Maps are saved in the maps directory with the specified map name
+
+   NOTE: This can technically still do localization too, you will need to 
+   change the mode to localization in the slam_params_online_async.yaml file or 
+   you can include an argument mode:=localization during launching 
+
+2. Localization with SLAM Toolbox
+   - Use: ros2 launch danny_bot slam_toolbox_localization.launch.py
+   - Purpose: Uses SLAM Toolbox for localization with an existing map
+   - Loads a previously saved map and localizes the robot within it
+
+3. amcl Localization
+   - Use: ros2 launch danny_bot amcl_localization.launch.py
+   - Purpose: Uses AMCL algorithm for localization with an existing map
+   - More efficient than SLAM Toolbox for pure localization use cases
+
+===== NAVIGATION =====
+1. nav2_nav 
+   - Use: ros2 launch danny_bot nav2_nav.launch.py
+   - Purpose: Launches the Nav2 navigation stack
+   - Can be used with a pre-existing map or with SLAM for simultaneous mapping
+
+   NOTE: This is an include for autonomous_nav
+
+
+2. Autonomous Navigation
+   - Use: ros2 launch danny_bot autonomous_nav.launch.py
+   - Purpose: Full solution with simulation environment, SLAM and navigation
+   - Creates a new map and allows for autonomous navigation in the same session
+
+   NOTE: For this to work properly, you also need to run nav2_nav 
+
+3. Autonomous navigation with amcl 
+-Use: 
+      ros2 launch danny_bot amcl_autonomous_nav.launch.py
+      ros2 launch danny_bot amcl_localization.launch.py
+
+-Purpose: Uses the amcl for continous mapping and localization for dynamic
+obstacle after our static map has been created.
+-Uses both preexisting map and new one 
+
+NOTE: You have to run the too commands above
+Also, this is very untuned and sometimes when you place an obstacle in the map, you will
+see it being randomly placed or multiplying in the cost map.
+The static map (localization map) will not have the newly added obstacles. 
+
+
+===== CONTROL =====
+1. Joystick
+   - Use: ros2 launch danny_bot joystick.launch.py
+   - Purpose: Allows manual control of the robot using a joystick
+   - Publishes to /cmd_vel_joy topic
+
+2. Twist Mux
+   - Use: ros2 launch danny_bot twist_mux.launch.py
+   - Purpose: Arbitrates between multiple cmd_vel sources (joystick, navigation, etc.)
+   - Priority: emergency commands > joystick > navigation
+
+   NOTE: I created this one so i can use the joystick while doing autonomous navigation
+   The joystick has a higher priority than the autonomous navigation
+
+===== SIMULATION =====
+1. Main Simulation
+   - Use: ros2 launch danny_bot main.launch.py
+   - Purpose: Launches the basic simulation environment
+   - Includes: Gazebo, robot model, RViz, joystick control, and twist_mux
+
+   NOTE: THis is the main launch file, i think it is included in every other launch files
+   so that we can see the robot in gazebo and rviz
+
+2. Gazebo Model
+   - Use: ros2 launch danny_bot gazebo_model.launch.py
+   - Purpose: Only spawns the robot model in Gazebo
+   - Useful for testing the robot model without other components
+
+
+===== WHAT EACH FILE IN THE LAUNCH DIRECTORY DOES =====
+
+1. main.launch.py
+   - Core simulation launch file
+   - Spawns the robot model in Gazebo
+   - Starts RViz for visualization
+   - Includes joystick control and twist_mux
+
+2. autonomous_nav.launch.py
+   - Comprehensive navigation solution
+   - Includes simulation environment (via main.launch.py)
+   - Sets up SLAM Toolbox in mapping mode
+   - Allows for mapping and navigation in the same session
+
+3. slam.launch.py
+   - Focused on mapping with SLAM Toolbox
+   - Can be run with an existing simulation or independently
+   - Configurable for different SLAM modes
+
+4. slam_toolbox_localization.launch.py
+   - Uses SLAM Toolbox for localization with an existing map
+   - Configurable for different map files
+
+5. amcl_localization.launch.py
+   - Uses AMCL algorithm for localization
+   - More resource-efficient than SLAM Toolbox localization
+   - Requires a pre-existing map
+
+6. nav2_nav.launch.py
+   - Launches the Nav2 navigation stack
+   - Can be used with any localization method
+
+7. navigation_launch.py
+   - Implementation of Nav2 navigation components
+   - Not meant to be launched directly (used by other launch files)
+
+8. localization_launch.py
+   - Implementation of Nav2 localization components
+   - Not meant to be launched directly (used by other launch files)
+
+9. joystick.launch.py
+   - Sets up joystick control for the robot
+   - Configurable for different joystick types
+
+10. twist_mux.launch.py
+    - Sets up the twist multiplexer to arbitrate between control sources
+    - Manages priority of velocity commands
+
+11. gazebo_model.launch.py
+    - Minimal launch file for spawning the robot in Gazebo
+    - Useful for testing the robot model itself
+
+===== COMMON USAGE SCENARIOS =====
+
+1. Creating a new map:
+   ros2 launch danny_bot main.launch.py
+   ros2 launch danny_bot slam.launch.py 
+
+2. Navigation with a pre-existing map:
+   ros2 launch danny_bot main.launch.py 
+   ros2 launch danny_bot amcl_localization.launch.py
+   ros2 launch danny_bot nav2_nav.launch.py
+
+3. All-in-one solution for mapping and navigation:
+   ros2 launch danny_bot autonomous_nav.launch.py
+
+4. Manual control with joystick:
+   ros2 launch danny_bot main.launch.py
+
+===== IMPORTANT PARAMETERS =====
+
+- map_file_name: Path to the map file without extension
+- slam_mode: 'mapping' for creating new maps, 'localization' for using existing maps
+- use_sim_time: Set to 'true' when using simulation
+

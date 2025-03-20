@@ -49,6 +49,15 @@ def generate_launch_description():
         }.items()
     )
     
+    # Launch the navigation environment
+    # navigation_launch = IncludeLaunchDescription(
+    #     PythonLaunchDescriptionSource([os.path.join(
+    #         mobile_dd_robot_dir, 'launch', 'nav2_nav.launch.py')]),
+    #     launch_arguments={
+    #         'use_sim_time': use_sim_time
+    #     }.items()
+    # )
+    
     # Create SLAM Toolbox node with direct parameter overrides to ensure they take precedence
     start_slam_toolbox_node = Node(
         package='slam_toolbox',
@@ -81,6 +90,7 @@ def generate_launch_description():
     
     # Add simulation launch
     ld.add_action(simulation_launch)
+    # ld.add_action(navigation_launch)
     
     # Add SLAM node
     ld.add_action(start_slam_toolbox_node)

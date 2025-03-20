@@ -15,6 +15,8 @@ Panels:
         - /Odometry1/Shape1
         - /Odometry1/Covariance1
         - /Map1
+        - /Map2
+        - /Map2/Topic1
       Splitter Ratio: 0.5
     Tree Height: 416
   - Class: rviz_common/Selection
@@ -78,7 +80,7 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        body_link:
+        base_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -151,7 +153,7 @@ Visualization Manager:
         All Enabled: true
         base_footprint:
           Value: true
-        body_link:
+        base_link:
           Value: true
         camera_link:
           Value: true
@@ -188,7 +190,7 @@ Visualization Manager:
         map:
           odom:
             base_footprint:
-              body_link:
+              base_link:
                 camera_link:
                   camera_optical_frame:
                     {}
@@ -359,6 +361,27 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
         Value: /map_updates
+      Use Timestamp: false
+      Value: true
+    - Alpha: 0.699999988079071
+      Class: rviz_default_plugins/Map
+      Color Scheme: costmap
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /global_costmap/costmap
+      Update Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /global_costmap/costmap_updates
       Use Timestamp: false
       Value: true
   Enabled: true

@@ -1,7 +1,7 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription , DeclareLaunchArgument
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.substitutions import LaunchConfiguration
@@ -28,6 +28,12 @@ def generate_launch_description():
     
     # Get robot description from xacro
     robotDescription = xacro.process_file(pathModelFile).toxml()
+    
+    declare_use_sim_time_cmd = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='true',
+        description='Use simulation (Gazebo) clock if true'
+    )
     
     # Gazebo launch
     gazebo_rosPackageLaunch = PythonLaunchDescriptionSource(
@@ -86,6 +92,7 @@ def generate_launch_description():
     launchDescriptionObject = LaunchDescription()
     
     # Add actions
+    launchDescriptionObject.add_action(declare_use_sim_time_cmd)
     launchDescriptionObject.add_action(gazeboLaunch)
     launchDescriptionObject.add_action(spawnModelNode)
     launchDescriptionObject.add_action(nodeRobotStatePublisher)
