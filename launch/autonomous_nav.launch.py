@@ -3,7 +3,7 @@ import os
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
@@ -41,13 +41,13 @@ def generate_launch_description():
         description='SLAM mode: "mapping" or "localization"')
     
     # Launch the simulation environment
-    # simulation_launch = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource([os.path.join(
-    #         mobile_dd_robot_dir, 'launch', 'main.launch.py')]),
-    #     launch_arguments={
-    #         'use_sim_time': use_sim_time
-    #     }.items()
-    # )
+    simulation_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            mobile_dd_robot_dir, 'launch', 'main.launch.py')]),
+        launch_arguments={
+            'use_sim_time': use_sim_time
+        }.items()
+    )
     
     # Create SLAM Toolbox node with direct parameter overrides to ensure they take precedence
     start_slam_toolbox_node = Node(
@@ -69,6 +69,7 @@ def generate_launch_description():
         remappings=[]
     )
     
+    
     # Create launch description
     ld = LaunchDescription()
     
@@ -79,9 +80,13 @@ def generate_launch_description():
     ld.add_action(declare_slam_mode_cmd)
     
     # Add simulation launch
-    # ld.add_action(simulation_launch)
+    ld.add_action(simulation_launch)
     
     # Add SLAM node
     ld.add_action(start_slam_toolbox_node)
+    
+    # Add navigation launch (after SLAM)
+    #please run ros2 launch danny_bot nav2_nav.launch.py 
+    #couldnt include it here for some reason (weird bahavior)
     
     return ld 

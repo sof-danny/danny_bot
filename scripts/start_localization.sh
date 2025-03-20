@@ -5,7 +5,7 @@ source /opt/ros/humble/setup.bash
 source ~/ros2_ws/install/setup.bash
 
 # Run the SLAM launch file with explicit parameter override for localization mode
-ros2 launch mobile_dd_robot slam.launch.py slam_mode:=localization map_file_name:=$HOME/ros2_ws/src/mobile_dd_robot/maps/map_1_serial
+ros2 launch danny_bot slam.launch.py slam_mode:=localization map_file_name:=$HOME/ros2_ws/src/danny_bot/maps/map_1_serial
 
 # Alternatively, you can verify the mode was set correctly
 # echo "Current SLAM mode is:"

@@ -11,7 +11,7 @@ import xacro
 
 def generate_launch_description():
     # Package directories
-    mobile_dd_robot_dir = get_package_share_directory('mobile_dd_robot')
+    mobile_dd_robot_dir = get_package_share_directory('danny_bot')
     
     # Launch Arguments
     use_sim_time = LaunchConfiguration('use_sim_time')

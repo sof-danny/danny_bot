@@ -4,6 +4,7 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
 import xacro
 
 def generate_launch_description():
@@ -11,7 +12,10 @@ def generate_launch_description():
     robotXacroName = 'differential_drive_robot'
     
     # Package name
-    namePackage = 'mobile_dd_robot'
+    namePackage = 'danny_bot'
+    
+    # Launch Arguments
+    use_sim_time = LaunchConfiguration('use_sim_time')
     
     # Paths to files
     modelFileRelativePath = 'model/robot.xacro'
@@ -49,7 +53,7 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'robot_description': robotDescription,
-            'use_sim_time': True
+            'use_sim_time': use_sim_time
         }]
     )
     
@@ -59,7 +63,7 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         arguments=['-d', rvizConfigPath],
-        parameters=[{'use_sim_time': True}],
+        parameters=[{'use_sim_time': use_sim_time}],
         output='screen'
     )
 
@@ -67,6 +71,14 @@ def generate_launch_description():
     joystickLaunch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory(namePackage), 'launch', 'joystick.launch.py')
+        ),
+        launch_arguments={'use_sim_time': use_sim_time}.items()
+    )
+    
+    #Include twist mux launch file
+    twist_mux_launch = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory(namePackage), 'launch', 'twist_mux.launch.py')
         )
     )
     
@@ -79,5 +91,6 @@ def generate_launch_description():
     launchDescriptionObject.add_action(nodeRobotStatePublisher)
     launchDescriptionObject.add_action(rvizNode)
     launchDescriptionObject.add_action(joystickLaunch)
+    launchDescriptionObject.add_action(twist_mux_launch)
     
     return launchDescriptionObject 

@@ -7,7 +7,7 @@
     <joint name="lidar_connector_joint" type="fixed">
         <parent link="${parent_link}"/>
         <child link="lidar_connector_link"/>
-        <origin xyz="0 0 ${body_link_z_dim/2}" rpy="0 0 0"/>
+        <origin xyz="0 0 ${base_link_z_dim/2}" rpy="0 0 0"/>
     </joint>
 
     <link name="lidar_connector_link">

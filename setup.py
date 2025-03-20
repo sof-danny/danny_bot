@@ -2,12 +2,12 @@ from setuptools import setup
 import os
 from glob import glob
 
-package_name = 'mobile_dd_robot'
+package_name = 'danny_bot'
 
 setup(
     name=package_name,
     version='0.0.0',
-    packages=[package_name],
+    packages = ['danny_bot'],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),

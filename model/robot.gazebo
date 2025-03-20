@@ -15,7 +15,7 @@
   <material>Gazebo/Gray</material>
 </gazebo>
 
-<gazebo reference="body_link">
+<gazebo reference="base_link">
   <mu1>0.2</mu1>
   <mu2>0.2</mu2>
   <material>Gazebo/Green</material>
@@ -61,7 +61,7 @@
         <right_joint>right_wheel_joint</right_joint>
 
         <!-- kinematics -->
-        <wheel_separation>${body_link_y_dim+wheel_link_length}</wheel_separation>
+        <wheel_separation>${base_link_y_dim+wheel_link_length}</wheel_separation>
    
         <wheel_diameter>${2*wheel_link_radius}</wheel_diameter>
 
