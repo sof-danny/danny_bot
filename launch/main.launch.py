@@ -52,6 +52,32 @@ def generate_launch_description():
         output='screen'
     )
     
+    #adding this to use ros2_control
+    controller_manager_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[{'robot_description': robotDescription},
+                   {'use_sim_time': use_sim_time},
+                   os.path.join(get_package_share_directory(namePackage), 'config', 'my_controllers.yaml')],
+        output='screen'
+    )
+    
+    diff_drive_spawner=Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["diff_cont"],  # Fixed: removed quotes
+        parameters=[{'use_sim_time': use_sim_time}],
+        output='screen'
+    )
+    
+    joint_broad_spawner=Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_broad"],  # Fixed: removed quotes
+        parameters=[{'use_sim_time': use_sim_time}],
+        output='screen'
+    )
+    
     # Robot State Publisher
     nodeRobotStatePublisher = Node(
         package='robot_state_publisher',
@@ -63,6 +89,8 @@ def generate_launch_description():
         }]
     )
     
+
+    
     # RViz
     rvizNode = Node(
         package='rviz2',
@@ -72,6 +100,8 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}],
         output='screen'
     )
+    
+    
 
     # Include joystick launch file
     joystickLaunch = IncludeLaunchDescription(
@@ -89,15 +119,18 @@ def generate_launch_description():
     )
     
     # Create launch description
-    launchDescriptionObject = LaunchDescription()
+    ld = LaunchDescription()
     
     # Add actions
-    launchDescriptionObject.add_action(declare_use_sim_time_cmd)
-    launchDescriptionObject.add_action(gazeboLaunch)
-    launchDescriptionObject.add_action(spawnModelNode)
-    launchDescriptionObject.add_action(nodeRobotStatePublisher)
-    launchDescriptionObject.add_action(rvizNode)
-    launchDescriptionObject.add_action(joystickLaunch)
-    launchDescriptionObject.add_action(twist_mux_launch)
+    ld.add_action(declare_use_sim_time_cmd)
+    ld.add_action(gazeboLaunch)
+    ld.add_action(spawnModelNode)
+    ld.add_action(nodeRobotStatePublisher)
+    ld.add_action(rvizNode)
+    ld.add_action(joystickLaunch)
+    ld.add_action(twist_mux_launch)
+    ld.add_action(controller_manager_node)
+    ld.add_action(diff_drive_spawner)
+    ld.add_action(joint_broad_spawner)
     
-    return launchDescriptionObject 
+    return ld

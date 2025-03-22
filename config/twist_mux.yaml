@@ -10,6 +10,5 @@
         timeout: 0.5
         priority: 10
     
-    # publisher:
-    #   topic: /diff_cont/cmd_vel_unstamped
-    #   timeout: 0.5
+    publisher:
+      topic: /diff_cont/cmd_vel_unstamped

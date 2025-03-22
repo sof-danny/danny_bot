@@ -6,78 +6,81 @@
 <!-- Modified by Sanuel Folorunsho Mar 2025 -->
 <!-- ###################################### 						-->
 <robot>
-<!-- Everything is described here -->
-<!-- http://classic.gazebosim.org/tutorials?tut=ros_urdf&cat=connect_ros  -->
-<!-- mu1 and mu2 are friction coefficients -->
-<gazebo reference="base_footprint">
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <material>Gazebo/Gray</material>
-</gazebo>
+  <!-- Everything is described here -->
+  <!-- http://classic.gazebosim.org/tutorials?tut=ros_urdf&cat=connect_ros  -->
+  <!-- mu1 and mu2 are friction coefficients -->
+  <gazebo reference="base_footprint">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/Gray</material>
+  </gazebo>
 
-<gazebo reference="base_link">
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <material>Gazebo/Green</material>
-</gazebo>
+  <gazebo reference="base_link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/Green</material>
+  </gazebo>
 
-<gazebo reference="right_wheel_link">
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <material>Gazebo/Black</material>
-</gazebo>
-
-
-<gazebo reference="left_wheel_link">
-  <mu1>0.2</mu1>
-  <mu2>0.2</mu2>
-  <material>Gazebo/Black</material>
-</gazebo>
+  <gazebo reference="right_wheel_link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/Black</material>
+  </gazebo>
 
 
-<gazebo reference="caster_link">
-  <mu1>0.000002</mu1>
-  <mu2>0.000002</mu2>
-  <material>Gazebo/Gray</material>
-</gazebo>
+  <gazebo reference="left_wheel_link">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/Black</material>
+  </gazebo>
 
-<!-- GPS sensor in Gazebo moved to modular file gps.xacro -->
 
-<!-- Controller for the differential drive robot -->
-<gazebo>
-<plugin name='diff_drive' filename='libgazebo_ros_diff_drive.so'>
+  <gazebo reference="caster_link">
+    <mu1>0.000002</mu1>
+    <mu2>0.000002</mu2>
+    <material>Gazebo/Gray</material>
+  </gazebo>
 
-        <ros>
-          <namespace> </namespace>
-        </ros>
 
-        <!-- Number of wheel pairs -->
-        <num_wheel_pairs>1</num_wheel_pairs>
-                  
-        
+  <!-- USING ROS2_CONTROL -->
+  <!-- check resoiurces for the plugin -->
 
-        <!-- wheels0-->
-        <left_joint>left_wheel_joint</left_joint>
-        <right_joint>right_wheel_joint</right_joint>
+  <!-- GPS sensor in Gazebo moved to modular file gps.xacro -->
 
-        <!-- kinematics -->
-        <wheel_separation>${base_link_y_dim+wheel_link_length}</wheel_separation>
-   
-        <wheel_diameter>${2*wheel_link_radius}</wheel_diameter>
+  <!-- Controller for the differential drive robot -->
+  <!-- Note I have used COMMENT to denote comments in the line because 
+  xml doesnt allow nested commenting -->
 
-        <!-- limits -->
-        <max_wheel_torque>5000</max_wheel_torque>
-        <max_wheel_acceleration>7.0</max_wheel_acceleration>
+  <gazebo>
+  <plugin name='diff_drive' filename='libgazebo_ros_diff_drive.so'>
 
-        <!-- output -->
-        <publish_odom>true</publish_odom>
-        <publish_odom_tf>true</publish_odom_tf>
-        <publish_wheel_tf>true</publish_wheel_tf>
+          <ros>
+            <namespace> </namespace>
+          </ros>
 
-        <odometry_frame>odom</odometry_frame>
-        <robot_base_frame>base_footprint</robot_base_frame>
+          <!-- COMMENT: Number of wheel pairs -->
+          <num_wheel_pairs>1</num_wheel_pairs>
+                    
+        <!-- COMMENT:  wheels0 -->
+          <left_joint>left_wheel_joint</left_joint>
+          <right_joint>right_wheel_joint</right_joint>
+
+          <!-- COMMENT: kinematics -->
+          <wheel_separation>${base_link_y_dim+wheel_link_length}</wheel_separation>
     
-      </plugin>
-</gazebo> 
-     
+          <wheel_diameter>${2*wheel_link_radius}</wheel_diameter>
+
+          <!-- COMMENT: limits -->
+          <max_wheel_torque>5000</max_wheel_torque>
+          <max_wheel_acceleration>7.0</max_wheel_acceleration>
+
+          <!-- COMMENT: output -->
+          <publish_odom>true</publish_odom>
+          <publish_odom_tf>true</publish_odom_tf>
+          <publish_wheel_tf>true</publish_wheel_tf>
+
+          <odometry_frame>odom</odometry_frame>
+          <robot_base_frame>base_footprint</robot_base_frame>
+        </plugin>
+  </gazebo> 
 </robot>

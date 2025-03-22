@@ -27,8 +27,8 @@ def generate_launch_description():
         package='teleop_twist_joy',
         executable='teleop_node',
         name='teleop_node',
-        parameters=[joy_params, {'use_sim_time': use_sim_time}],
-        remappings=[('/cmd_vel', '/cmd_vel')]  #i changed the mapping from /cmd_vel
+        parameters=[joy_params, {'use_sim_time': use_sim_time}]
+        #remappings=[('/cmd_vel', '/cmd_vel')]  # Ensure it's mapping to cmd_vel_joy
     )
 
     return LaunchDescription([

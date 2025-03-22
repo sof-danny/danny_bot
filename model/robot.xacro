@@ -106,6 +106,9 @@ value="${(1.0/12.0)*wheel_mass*(3.0*wheel_link_radius*wheel_link_radius+wheel_li
 <!-- Over here we include the file that defines extra Gazebo options and motion control driver -->
 <xacro:include filename="$(find danny_bot)/model/robot.gazebo" />
 
+<!-- <xacro:include filename="$(find danny_bot)/model/ros2_control.xacro"/> -->
+
+
 <!-- ########################################################### -->
 <!-- FROM HERE WE DEFINE LINKS, JOINTS 				 -->
 <!-- ########################################################### -->
